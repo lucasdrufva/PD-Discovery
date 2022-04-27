@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-#include "pin-definitions.h"
+#include "board.h"
 
 namespace Charger 
 {
@@ -9,4 +9,5 @@ namespace Charger
     void enable();
     void disable();
     bool checkSafeVoltage();
+    bool status();
 }

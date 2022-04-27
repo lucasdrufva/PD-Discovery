@@ -17,6 +17,7 @@ enum EventType{
   ID,
   SOURCE_CAP,
   CHANGE_MODE,
+  BUTTON
 };
 
 struct Event{
@@ -26,6 +27,7 @@ struct Event{
 
 struct IDRecievedEvent;
 struct SourceCapRecievedEvent;
+struct ButtonEvent;
 
 class State{
 public:
@@ -35,6 +37,7 @@ public:
     virtual void react(EventData *event) {};
     virtual void react(IDRecievedEvent *event) {};
     virtual void react(SourceCapRecievedEvent *event) {};
+    virtual void react(ButtonEvent *event) {};
     State(){};
 };
 
@@ -44,6 +47,10 @@ public:
     {
       return currentState;
     }
+
+    static State& stateFromMode(Mode mode);
+    static const char* nameFromMode(Mode mode);
+    static Mode nextMode(Mode mode);
 
     void setCurrentState(State& state)
     {

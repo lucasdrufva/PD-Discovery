@@ -3,6 +3,7 @@
 #include "fsm.h"
 #include "display.h"
 #include "detectCable.h"
+#include "menu.h"
 #include "buttons.h"
 #include "board/board.h"
 
@@ -26,6 +27,7 @@ void setup()
   Serial.begin(115200);
   Wire.begin();
   // TODO: power things
+  pinMode(10, OUTPUT);
   
   // Start USB PD
   attachInterrupt(2, isr, FALLING);
@@ -37,21 +39,23 @@ void setup()
   Serial.println("Display started");
 
   // Start state machine
-  sm.setCurrentState(CableModeState::getInstance());
+  sm.setCurrentState(MenuState::getInstance());
 
   analogReadResolution(10);
+
+  Board::disableOutputSrc();
 }
 
 void loop()
 {
-  if (interruptFlag)
-  {
-    Serial.println("Interrupt recieved");
-    fusb.handleInterrupt();
-    interruptFlag = false;
-  }
+  // if (interruptFlag)
+  // {
+  //   Serial.println("Interrupt recieved");
+  //   fusb.handleInterrupt();
+  //   interruptFlag = false;
+  // }
 
-  if (millis() - updateTime > 500)
+  if (millis() - updateTime > 200)
   {
     sm.update();
 
@@ -60,4 +64,24 @@ void loop()
     Serial.println("Idle");
     updateTime = millis();
   }
+
+  // Board::enableOutputVoltage();
+  // Board::setOutputSrc5v();
+  // delay(100);
+  // Board::enableOutputSrc();
+  // delay(1000);
+  // Board::disableOutputSrc();
+  // delay(1000);
+  // Board::setOutputSrc9v();
+  // delay(100);
+  // Board::enableOutputSrc();
+  // delay(1000);
+  // Board::disableOutputSrc();
+  // delay(1000);
+  // Board::setOutputSrc12v();
+  // delay(100);
+  // Board::enableOutputSrc();
+  // delay(1000);
+  // Board::disableOutputSrc();
+  // delay(1000);
 }

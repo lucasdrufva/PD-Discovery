@@ -6,24 +6,26 @@ extern Display display;
 void ChargeModeState::enter()
 {
     sm.mode = CHARGE;
-    //Charger::enable();
+    Charger::enable();
 }
 
 void ChargeModeState::exit() 
 {
-    //Charger::disable();
+    Charger::disable();
 }
 
 
 void ChargeModeState::update()
 {
-    //uint16_t VbusMilliVolt = Board::readVbusMilliVolt();
-    uint16_t VbusMilliVolt = 100;
+    uint16_t VbusMilliVolt = Board::readVbusMilliVolt();
+    uint16_t batteryMilliVolt = Board::readBatteryMilliVolt();
+    bool status = Charger::status();
+    //uint16_t VbusMilliVolt = 100;
 
-    if (VbusMilliVolt > 100){
-        display.drawCharging(VbusMilliVolt);
-    }else {
-        display.drawWaitConnection();
-    }
+    //if (VbusMilliVolt > 100){
+        display.drawCharging(VbusMilliVolt, batteryMilliVolt, status);
+    //}else {
+        //display.drawWaitConnection();
+    //}
     
 }
