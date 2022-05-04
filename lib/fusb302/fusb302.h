@@ -41,6 +41,7 @@ public:
     void init();
     void softReset();
     void pdReset();
+    void reset();
     void handleInterrupt();
 
     void setIsSource(bool isSource);

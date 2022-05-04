@@ -1,5 +1,7 @@
 #include "display.h"
 
+#include "menu.h"
+
 // extern StateMachine sm;
 
 void Display::debug()
@@ -98,8 +100,11 @@ void Display::drawCable(PD::Identity id)
     oled.print("Approx length: ~");
     oled.print(id.passiveCable.latency);
     oled.println("m");
+
+    oled.setCursor(0,56);
+    oled.print("> Back");
+
     oled.display();
-    this->drawModeBar();
 }
 
 void Display::drawWaitConnection()
@@ -114,10 +119,12 @@ void Display::drawWaitConnection()
     }
     animationFrame = (animationFrame + 1) % 5;
     oled.println();
-    oled.setCursor(0, 16);
-    oled.println("<---");
+    oled.setCursor(100, 16);
+    oled.drawLine(100, 20, 100, 40, WHITE);
+    oled.drawLine(100, 40, 90, 35, WHITE);
+    oled.drawLine(100, 40, 110, 35, WHITE);
+    
     oled.display();
-    this->drawModeBar();
 }
 
 void Display::drawPS(PD::Capabilities cap)
@@ -132,8 +139,13 @@ void Display::drawPS(PD::Capabilities cap)
         oled.print(cap.dataObjects[i].sourceFixed.current / 1000.0, 1);
         oled.println("A");
     }
+
+    oled.setCursor(0,56);
+    oled.print("> Back");
+
     oled.display();
-    this->drawModeBar();
+
+    oled.display();
 }
 
 void Display::drawModeBar()
@@ -188,14 +200,8 @@ void Display::drawCharging(uint16_t VBusVoltage, uint16_t batteryVoltage, bool s
 
 
 
-void Display::drawMenu(const char **items, int index)
+void Display::drawMenu(const Menu_item items[], int index, int length)
 {
-  int length = 0;
-  while(items[length] != 0)
-  {
-    length++;
-  }
-
   int start = index - 1;
   if(start < 0)
     start = 0;
@@ -216,9 +222,9 @@ void Display::drawMenu(const char **items, int index)
     {
       oled.print(">");
     }
-    oled.println(items[i]);
+    oled.print(" ");
+    oled.println(items[i].title);
   }
 
   oled.display();
-
 }

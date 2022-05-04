@@ -1,4 +1,4 @@
-#include "board/charger.h"
+#include "charger.h"
 
 void Charger::enable(){
     // TODO: Check safe voltage

@@ -227,6 +227,7 @@ public:
     };
 
     void begin(TcpmDriver *tcpm);
+    void reset();
 
     // No capabilites advertised
     void configureAsSource();

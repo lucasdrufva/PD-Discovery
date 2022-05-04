@@ -4,8 +4,9 @@
 #include <Wire.h>
 
 #include <USB-PD.h>
+// #include "menu.h"
 
-// #include "fsm.h"
+typedef struct Menu_item Menu_item;
 
 #define MENU_MAX_DRAWN 4
 
@@ -13,7 +14,7 @@
 class Display{
 public:
     void begin();
-    void drawMenu(const char **items, int index);
+    void drawMenu(const Menu_item items[], int index, int length);
 
 
     void drawModeBar();

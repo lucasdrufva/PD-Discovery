@@ -14,6 +14,8 @@ class TcpmDriver
 public:
     virtual void begin() = 0;
 
+    virtual void reset() = 0;
+
     virtual void sendMessage(uint16_t header, const uint32_t *data, PD::Destination destination) = 0;
 
     virtual int getMessageID() = 0;

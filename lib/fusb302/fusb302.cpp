@@ -232,6 +232,11 @@ void FUSB302::pdReset()
     messageID = 0;
 }
 
+void FUSB302::reset()
+{
+    this->pdReset();
+}
+
 uint8_t FUSB302::checkVConn(){
     uint8_t data;
     this->i2c_read(FUSB_SWITCHES0, &data);

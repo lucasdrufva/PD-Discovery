@@ -24,6 +24,11 @@ void PD_Engine::begin(TcpmDriver *tcpm)
     registerMessageCB(tcpm);
 }
 
+void PD_Engine::reset()
+{
+    this->tcpm->reset();
+}
+
 void PD_Engine::configureAsSource()
 {
     this->tcpm->setIsSource(true);
