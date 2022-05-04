@@ -1,9 +1,9 @@
 #pragma once
 #include <Arduino.h>
 
-#include "pin-definitions.h"
+#include <pin-definitions.h>
 
-namespace Board
+namespace BSP
 {
     namespace Charger {}
     namespace Source {}
@@ -18,4 +18,6 @@ namespace Board
     void setOutputSrc5v();
     void setOutputSrc9v();
     void setOutputSrc12v();
+    void enableVconn();
+    void disableVconn();
 }

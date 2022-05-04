@@ -1,8 +1,8 @@
 #include "fusb302.h"
 
-//TODO: remove
-#include "display.h"
-extern Display display;
+// //TODO: remove
+// #include "display.h"
+// extern Display display;
 
 void FUSB302::begin()
 {
@@ -627,7 +627,7 @@ void FUSB302::read_message()
     //this->messageID++;
 
     //TODO: Move parsing logic to PD engine
-    PD::Messasge message;
+    PD::Message message;
 
     int messageType =  PD::parseHeaderMessageType(header);
     //Control message
@@ -969,6 +969,6 @@ int FUSB302::getMessageID()
     return this->messageID;
 }
 
-void FUSB302::setReceivedMessageCB(void (*cb)(PD::Messasge)){
+void FUSB302::setReceivedMessageCB(void (*cb)(PD::Message)){
     this->receivedMessageCB = cb;
 }

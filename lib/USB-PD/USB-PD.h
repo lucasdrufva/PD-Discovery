@@ -203,7 +203,7 @@ namespace PD
         };
     };
 
-    struct Messasge
+    struct Message
     {
         MessageType type;
         union
@@ -244,7 +244,7 @@ public:
     void getConnectionStatus();
 
     //For use by tcpm
-    void handleMessage(PD::Messasge msg);
+    void handleMessage(PD::Message msg);
 
 private:
     TcpmDriver *tcpm;

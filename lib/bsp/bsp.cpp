@@ -1,51 +1,61 @@
-#include "board/board.h"
+#include <BSP.h>
 
-uint16_t Board::readVbusMilliVolt(){
+uint16_t BSP::readVbusMilliVolt(){
     int raw = analogRead(A3);
     int voltage = (((raw*1000) / 1024) * 22 );
     return (uint16_t) voltage;
 }
 
-uint16_t Board::readBatteryMilliVolt(){
+uint16_t BSP::readBatteryMilliVolt(){
     int raw = analogRead(A0);
     int voltage = (((raw*1000) / 1024) * 631 ) / 100;
     return (uint16_t) voltage;
 }
 
 //TODO init pins
-void Board::enableOutputSrc(){
+void BSP::enableOutputSrc(){
     pinMode(29, OUTPUT);
     digitalWrite(29, HIGH);
 }
 
-void Board::disableOutputSrc(){
+void BSP::disableOutputSrc(){
     pinMode(29, OUTPUT);
     digitalWrite(29, LOW);
 }
 
-void Board::enableOutputVoltage(){
+void BSP::enableOutputVoltage(){
     pinMode(21, OUTPUT);
     digitalWrite(21, HIGH);
 }
 
-void Board::disableOutputVoltage(){
+void BSP::disableOutputVoltage(){
     pinMode(21, OUTPUT);
     digitalWrite(21, LOW);
 }
 
-void Board::setOutputSrc5v(){
+void BSP::setOutputSrc5v(){
     pinMode(31, OUTPUT);
     pinMode(28, OUTPUT);
     digitalWrite(31, LOW);
     digitalWrite(28, LOW);
 }
 
-void Board::setOutputSrc9v(){
+void BSP::setOutputSrc9v(){
     digitalWrite(31, HIGH);
     digitalWrite(28, LOW);
 }
 
-void Board::setOutputSrc12v(){
+void BSP::setOutputSrc12v(){
     digitalWrite(31, HIGH);
     digitalWrite(28, HIGH);
+}
+
+void BSP::enableVconn(){
+    pinMode(PIN_ENABLE_VCONN, OUTPUT);
+    digitalWrite(PIN_ENABLE_VCONN, HIGH);
+}
+
+void BSP::disableVconn(){
+    pinMode(PIN_ENABLE_VCONN, OUTPUT);
+    digitalWrite(PIN_ENABLE_VCONN, LOW);
 }

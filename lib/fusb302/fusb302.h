@@ -36,7 +36,7 @@ public:
     void begin();
     void sendMessage(uint16_t header, const uint32_t *data, PD::Destination destination);
     int getMessageID();
-    void setReceivedMessageCB(void (*cb)(PD::Messasge));
+    void setReceivedMessageCB(void (*cb)(PD::Message));
 
     void init();
     void softReset();
@@ -69,7 +69,7 @@ public:
     uint8_t checkVConn();
 
 private:
-     void (*receivedMessageCB)(PD::Messasge);
+     void (*receivedMessageCB)(PD::Message);
 
     void i2c_write(uint8_t reg, uint8_t val);
     void i2c_mask_write(uint8_t reg, uint8_t val, uint8_t mask);

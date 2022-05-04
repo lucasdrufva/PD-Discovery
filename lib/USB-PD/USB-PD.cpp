@@ -2,7 +2,7 @@
 
 PD_Engine pd;
 
-void handleMessageCB(PD::Messasge msg)
+void handleMessageCB(PD::Message msg)
 {
     pd.handleMessage(msg);
 }
@@ -26,7 +26,7 @@ void PD_Engine::begin(TcpmDriver *tcpm)
 
 void PD_Engine::configureAsSource()
 {
-    tcpm->setIsSource(true);
+    this->tcpm->setIsSource(true);
 
     //is this needed?
     //Seems to prevent bugs sometimes
@@ -40,13 +40,13 @@ void PD_Engine::configureAsSink()
 
 PD_Engine::Error PD_Engine::requestIdentity(PD::Destination dest, void (*cb)(PD::Identity))
 {
-    identityCB = cb;
+    this->identityCB = cb;
 
-    //TODO use TCPM_DETECTION_RA
-    // if (!(tcpm->getConnection() & (1 << 3)))
-    // {
-    //     return PD_Engine::Error::DISCONNECT;
-    // }
+    // //TODO use TCPM_DETECTION_RA
+    // // if (!(tcpm->getConnection() & (1 << 3)))
+    // // {
+    // //     return PD_Engine::Error::DISCONNECT;
+    // // }
 
     uint32_t VDM_header = 0;
     VDM_header |= PD::VDM::DISCOVER_IDENTITY;
@@ -64,11 +64,11 @@ PD_Engine::Error PD_Engine::requestIdentity(PD::Destination dest, void (*cb)(PD:
     //Cable plug role
     header |= 0 << 8;
     //Message id
-    header |= (tcpm->getMessageID() & 0x07) << 9;
+    header |= (this->tcpm->getMessageID() & 0x07) << 9;
     //Number of data objects
     header |= 1 << 12;
 
-    tcpm->sendMessage(header, &VDM_header, dest);
+    this->tcpm->sendMessage(header, &VDM_header, dest);
 
     return PD_Engine::Error::NONE;
 }
@@ -83,7 +83,7 @@ void PD_Engine::registerCapCB(void (*cb)(PD::Capabilities))
     this->capabilitiesCB = cb;
 }
 
-void PD_Engine::handleMessage(PD::Messasge msg)
+void PD_Engine::handleMessage(PD::Message msg)
 {
     // this->capabilitiesCB(msg.dataMessage.sourceCap);
     if (msg.type == PD::MessageType::DATA)

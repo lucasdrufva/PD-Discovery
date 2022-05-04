@@ -18,7 +18,7 @@ public:
 
     virtual int getMessageID() = 0;
 
-    virtual void setReceivedMessageCB(void (*cb)(PD::Messasge)) = 0;
+    virtual void setReceivedMessageCB(void (*cb)(PD::Message)) = 0;
 
     virtual void setIsSource(bool isSource) = 0;
 

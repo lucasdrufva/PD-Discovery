@@ -1,6 +1,6 @@
 #include "display.h"
 
-extern StateMachine sm;
+// extern StateMachine sm;
 
 void Display::debug()
 {
@@ -142,7 +142,7 @@ void Display::drawModeBar()
     oled.drawRoundRect(46, 60, 35, 10, 5, 1);
     oled.drawRoundRect(85, 60, 35, 10, 5, 1);
 
-    oled.fillRoundRect((sm.mode * 39) + 7, 60, 35, 10, 5, 1);
+    // oled.fillRoundRect((sm.mode * 39) + 7, 60, 35, 10, 5, 1);
 
     oled.display();
 }
@@ -177,10 +177,48 @@ void Display::drawCharging(uint16_t VBusVoltage, uint16_t batteryVoltage, bool s
     this->drawModeBar();
 }
 
-void Display::drawModeOption(Mode mode){
-    oled.clearDisplay();
-    oled.setCursor(0, 0);
-    oled.setTextSize(2);
-    oled.println(StateMachine::nameFromMode(mode));
-    oled.display();
+// void Display::drawModeOption(Mode mode){
+//     oled.clearDisplay();
+//     oled.setCursor(0, 0);
+//     oled.setTextSize(2);
+//     // oled.println(StateMachine::nameFromMode(mode));
+//     oled.display();
+// }
+
+
+
+
+void Display::drawMenu(const char **items, int index)
+{
+  int length = 0;
+  while(items[length] != 0)
+  {
+    length++;
+  }
+
+  int start = index - 1;
+  if(start < 0)
+    start = 0;
+  
+  int end = start + MENU_MAX_DRAWN;
+  if(end > length)
+  {
+    end = length;
+  }
+
+
+  oled.clearDisplay();
+  oled.setCursor(0, 0);
+
+  for(int i = start; i < end; i++)
+  {
+    if(i == index)
+    {
+      oled.print(">");
+    }
+    oled.println(items[i]);
+  }
+
+  oled.display();
+
 }

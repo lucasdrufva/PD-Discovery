@@ -3,14 +3,21 @@
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
-#include "fsm.h"
+#include <USB-PD.h>
+
+// #include "fsm.h"
+
+#define MENU_MAX_DRAWN 4
 
 
 class Display{
 public:
     void begin();
+    void drawMenu(const char **items, int index);
+
+
     void drawModeBar();
-    void drawModeOption(Mode mode);
+    // void drawModeOption(Mode mode);
     void drawWaitConnection();
     void drawCableDisconnect();
     void drawCable(PD::Identity id);
