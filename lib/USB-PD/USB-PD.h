@@ -22,11 +22,11 @@ namespace PD
 
         typedef struct SourceFixed
         {
-            bool dualRolePOwer;  // Dual role power cabable
+            bool dualRolePower;  // Dual role power cabable
             bool suspend;        // USB Suspend supported
             bool unconstrained;  // Externally powered
             bool commCapable;    // USB Comunications Capable
-            bool dualRolePower;  // Data role swap command supported
+            bool dualRoleData;  // Data role swap command supported
             uint8_t peakCurrent; // Default 0, See USB PD rev2 6.4.1.2.3.6
             uint16_t voltage;    // Voltage in milliVolts
             uint16_t current;    // Current in milliAmpere
@@ -175,6 +175,7 @@ namespace PD
     {
         SOURCE_CAP = 0x1u,
         REQUEST = 0x2u,
+        SINK_CAP = 0x4u,
         VDM_TYPE = 0xFu,
     };
 
@@ -199,6 +200,7 @@ namespace PD
         union
         {
             Capabilities sourceCap;
+            Capabilities sinkCap;
             VdmMessage vdm;
         };
     };
@@ -241,6 +243,10 @@ public:
 
     void registerCapCB(void (*cb)(PD::Capabilities));
     Error requestSourceCap(void (*cb)(PD::Capabilities));
+    Error requestSinkCap(void (*cb)(PD::Capabilities));
+    void requestPower(int object_position);
+
+    void sendSourceCap(PD::Capabilities cap);
 
     void getConnectionStatus();
 
@@ -252,5 +258,7 @@ private:
 
     void (*identityCB)(PD::Identity);
     void (*capabilitiesCB)(PD::Capabilities);
+
+    PD::Capabilities last_cap_recieved;
 
 };

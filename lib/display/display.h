@@ -14,7 +14,7 @@ typedef struct Menu_item Menu_item;
 class Display{
 public:
     void begin();
-    void drawMenu(const Menu_item items[], int index, int length);
+    void drawMenu(Menu_item items[], int index, int length);
 
 
     void drawModeBar();

@@ -1,8 +1,8 @@
 #pragma once
 
 struct Menu_item{
-  const char *title;
+  char *title;
   void (*fn_ptr)();
 } ;
 
-void start_menu(const Menu_item menu_items[], int size);
+void start_menu(Menu_item menu_items[], int size);

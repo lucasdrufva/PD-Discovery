@@ -6,12 +6,12 @@
 // Forward declaration
 class Display{
 public:
-    void drawMenu(const Menu_item items[], int index, int length);
+    void drawMenu(Menu_item items[], int index, int length);
 };
 
 extern Display display;
 
-const Menu_item *g_current_menu;
+Menu_item *g_current_menu;
 int g_menu_index = 0;
 int g_menu_size = 0;
 
@@ -41,7 +41,7 @@ void menu_down()
     menu_draw();
 }
 
-void start_menu(const Menu_item menu_items[], int size)
+void start_menu(Menu_item menu_items[], int size)
 {
     g_current_menu = menu_items;
     g_menu_size = size;

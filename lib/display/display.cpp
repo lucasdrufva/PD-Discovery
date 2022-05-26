@@ -200,7 +200,7 @@ void Display::drawCharging(uint16_t VBusVoltage, uint16_t batteryVoltage, bool s
 
 
 
-void Display::drawMenu(const Menu_item items[], int index, int length)
+void Display::drawMenu(Menu_item items[], int index, int length)
 {
   int start = index - 1;
   if(start < 0)

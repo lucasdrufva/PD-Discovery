@@ -700,8 +700,33 @@ void FUSB302::read_message()
             //display.debug();
         }
 
+        else if( messageType == PD::DataMessageType::SINK_CAP)
+        {
+            message.dataMessage.type = PD::DataMessageType::SINK_CAP;
+
+            //TODO: Parse sink cap
+            PD::Capabilities sinkCap;
+
+            for (int i = 0; i < dataObjects; i++)
+            {
+                //TODO: Use real type
+                sinkCap.dataObjects[i].type = PD::PDO::Types::SINK_FIXED;
+                sinkCap.dataObjects[i].sinkFixed.voltage = ((data[i] >> 10) & 0x3FF) * 50;
+                sinkCap.dataObjects[i].sinkFixed.current = ((data[i]) & 0x3FF) * 10;
+            }
+            sinkCap.length = dataObjects;
+
+            message.dataMessage.sinkCap = sinkCap;
+            receivedMessageCB(message);
+        }
+
+        else if (messageType == PD::DataMessageType::REQUEST)
+        {
+            Serial.print("Request recieved");
+        }
+
         //Vendor defined message
-        if (messageType == PD::DataMessageType::VDM_TYPE)
+        else if (messageType == PD::DataMessageType::VDM_TYPE)
         {
              message.dataMessage.type = PD::DataMessageType::VDM_TYPE;
 

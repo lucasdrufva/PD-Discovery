@@ -83,9 +83,95 @@ PD_Engine::Error PD_Engine::requestSourceCap(void (*cb)(PD::Capabilities))
     this->capabilitiesCB = cb;
 }
 
+PD_Engine::Error PD_Engine::requestSinkCap(void (*cb)(PD::Capabilities))
+{
+    uint16_t header = 0;
+
+    //Message type: Get_Source_Cap
+    header |= 0x7;
+    //Revision
+    header |= 1 << 6;
+    //Cable plug role
+    header |= 0 << 8;
+    //Message id
+    header |= (this->tcpm->getMessageID() & 0x07) << 9;
+    //Number of data objects
+    header |= 0 << 12;
+
+    // Serial.print("Message id: ");
+    // Serial.println((this->messageID & 0x07));
+
+    this->tcpm->sendMessage(header, 0, PD::Destination::SOP);
+}
+
 void PD_Engine::registerCapCB(void (*cb)(PD::Capabilities))
 {
     this->capabilitiesCB = cb;
+}
+
+void PD_Engine::sendSourceCap(PD::Capabilities cap)
+{
+    uint16_t header = 0;
+
+    //Message type: Source_Capabilities
+    header |= 0x1;
+    //Revision
+    header |= 1 << 6;
+    //Port Power Role: Source
+    header |= 1 << 8;
+    //Message id
+    header |= (this->tcpm->getMessageID() & 0x07) << 9;
+    //Number of data objects
+    header |= cap.length << 12;
+
+    uint32_t body[7];
+
+    for(int i = 0; i < cap.length; i++)
+    {
+        PD::PDO::PDO data = cap.dataObjects[i];
+        if(data.type == PD::PDO::SOURCE_FIXED)
+        {
+            body[i] |= 0x0 << 30;
+            body[i] |= data.sourceFixed.dualRolePower << 29;
+            body[i] |= data.sourceFixed.suspend << 28;
+            body[i] |= data.sourceFixed.unconstrained << 27;
+            body[i] |= data.sourceFixed.commCapable << 26;
+            body[i] |= data.sourceFixed.dualRoleData << 25;
+
+            body[i] |= data.sourceFixed.peakCurrent << 20;
+            body[i] |= (data.sourceFixed.voltage / 50) << 10;
+            body[i] |= (data.sourceFixed.current / 10) << 0;
+        }
+    }
+
+    this->tcpm->sendMessage(header, body, PD::Destination::SOP);
+}
+
+void PD_Engine::requestPower(int object_position)
+{
+    uint16_t header = 0;
+
+    //Message type: Request
+    header |= 0x2;
+    //Revision
+    header |= 1 << 6;
+    //Port Power Role: Sink
+    header |= 0 << 8;
+    //Message id
+    header |= (this->tcpm->getMessageID() & 0x07) << 9;
+    //Number of data objects: 1
+    header |= 1 << 12;
+
+    uint32_t body;
+
+    body |= object_position+1 << 28;
+
+    // Operating current in 10mA units
+    this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10 << 10;
+    // Maximum Operating Current 10mA units, see 6.4.2
+    this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10 << 0;
+
+    this->tcpm->sendMessage(header, &body, PD::Destination::SOP);
 }
 
 void PD_Engine::handleMessage(PD::Message msg)
@@ -102,7 +188,12 @@ void PD_Engine::handleMessage(PD::Message msg)
         }
         else if (msg.dataMessage.type == PD::DataMessageType::SOURCE_CAP)
         {
+            this->last_cap_recieved = msg.dataMessage.sourceCap;
             this->capabilitiesCB(msg.dataMessage.sourceCap);
+        }
+        else if (msg.dataMessage.type == PD::DataMessageType::SINK_CAP)
+        {
+            this->capabilitiesCB(msg.dataMessage.sinkCap);
         }
     }
 }
