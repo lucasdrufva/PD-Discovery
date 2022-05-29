@@ -1,0 +1,11 @@
+(sym_lib_table
+  (lib (name TP4056)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/tp4056-master/lib/tp4056.lib)(options "")(descr ""))
+  (lib (name DW01)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/tp4056-master/lib/dw01.lib)(options "")(descr ""))
+  (lib (name FS8205a)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/tp4056-master/lib/fs8205a.lib)(options "")(descr "")(disabled))
+  (lib (name FS8205)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/fs8205/FS8205.lib)(options "")(descr ""))
+  (lib (name PD-Discovery-rescue)(type Legacy)(uri ${KIPRJMOD}/PD-Discovery-rescue.lib)(options "")(descr ""))
+  (lib (name SLLB120300)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/sllb120300/SLLB120300.lib)(options "")(descr ""))
+  (lib (name 24pFPC)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/24pFPC/687124183622.lib)(options "")(descr ""))
+  (lib (name 2pScrewTerminal)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/2pScrewTerminal/691214110002.lib)(options "")(descr ""))
+  (lib (name SSSS810701)(type Legacy)(uri /home/lucas/Documents/kicad/Libraries/ssss810701/SSSS810701.lib)(options "")(descr ""))
+)
