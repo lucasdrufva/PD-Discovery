@@ -70,18 +70,59 @@ void analyzeSink()
   pd.requestSinkCap(*sinkCapRecieved);
 }
 
+// Forward declaration
+void sourceCapRecieved(PD::Capabilities cap);
+
+int selected_pdo = -1;
+
 void handlePDO0()
 {
-  // TODO request power should first send get source cap then immediately respond with requested pdo
-  pd.requestPower(0);
+  selected_pdo = 0;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
 }
-void handlePDO1() { pd.requestPower(1); }
-void handlePDO2() { pd.requestPower(2); }
-void handlePDO3() { pd.requestPower(3); }
-void handlePDO4() { pd.requestPower(4); }
-void handlePDO5() { pd.requestPower(5); }
-void handlePDO6() { pd.requestPower(6); }
-void handlePDO7() { pd.requestPower(7); }
+void handlePDO1() 
+{ 
+  selected_pdo = 1;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO2()
+{ 
+  selected_pdo = 2;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO3()
+{ 
+  selected_pdo = 3;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO4()
+{ 
+  selected_pdo = 4;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO5()
+{ 
+  selected_pdo = 5;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO6()
+{ 
+  selected_pdo = 6;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
+void handlePDO7()
+{ 
+  selected_pdo = 7;
+  pd.requestSourceCap(*sourceCapRecieved);
+  fusb.requestSourceCap();
+}
 
 void (*handlePDO[8])() = {
     *handlePDO0,
@@ -99,18 +140,23 @@ Menu_item psMenuItems[9];
 
 void sourceCapRecieved(PD::Capabilities cap)
 {
-  char titles[8][13];
-  for (int i = 0; i < cap.length; i++)
-  {
-    // TODO support other types than source fixed
-    PD::PDO::SourceFixed data = cap.dataObjects[i].sourceFixed;
-    // TODO change from mA to A
-    sprintf(titles[i], "%dV - %dmA", data.voltage / 1000, data.current);
-    psMenuItems[i] = {.title = titles[i], .fn_ptr = handlePDO[i]};
+  if( selected_pdo < 0){
+    char titles[8][13];
+    for (int i = 0; i < cap.length; i++)
+    {
+      // TODO support other types than source fixed
+      PD::PDO::SourceFixed data = cap.dataObjects[i].sourceFixed;
+      // TODO change from mA to A
+      sprintf(titles[i], "%dV - %dmA", data.voltage / 1000, data.current);
+      psMenuItems[i] = {.title = titles[i], .fn_ptr = handlePDO[i]};
+    }
+    psMenuItems[cap.length] = {.title = "Back", .fn_ptr = *main_menu};
+    start_menu(psMenuItems, cap.length + 1);
   }
-  psMenuItems[cap.length] = {.title = "Back", .fn_ptr = *main_menu};
-
-  start_menu(psMenuItems, cap.length + 1);
+  else{
+    pd.requestPower(selected_pdo);
+    display.debug();
+  }
 }
 
 void analyzeSource()

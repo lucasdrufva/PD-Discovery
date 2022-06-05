@@ -167,9 +167,9 @@ void PD_Engine::requestPower(int object_position)
     body |= object_position+1 << 28;
 
     // Operating current in 10mA units
-    this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10 << 10;
+    body |= (this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10) << 10;
     // Maximum Operating Current 10mA units, see 6.4.2
-    this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10 << 0;
+    body |= (this->last_cap_recieved.dataObjects[object_position].sourceFixed.current / 10) << 0;
 
     this->tcpm->sendMessage(header, &body, PD::Destination::SOP);
 }
