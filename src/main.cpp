@@ -79,49 +79,41 @@ void handlePDO0()
 {
   selected_pdo = 0;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO1() 
 { 
   selected_pdo = 1;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO2()
 { 
   selected_pdo = 2;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO3()
 { 
   selected_pdo = 3;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO4()
 { 
   selected_pdo = 4;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO5()
 { 
   selected_pdo = 5;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO6()
 { 
   selected_pdo = 6;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 void handlePDO7()
 { 
   selected_pdo = 7;
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 
 void (*handlePDO[8])() = {
@@ -173,7 +165,6 @@ void analyzeSource()
   }
 
   pd.requestSourceCap(*sourceCapRecieved);
-  fusb.requestSourceCap();
 }
 
 void identityRecieved(PD::Identity id)
