@@ -1,0 +1,3 @@
+[submodule "lib/USB-PD"]
+	path = lib/USB-PD
+	url = https://github.com/lucasdrufva/USB-PD
